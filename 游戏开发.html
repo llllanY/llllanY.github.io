@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>游戏开发文档</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#10B981',
+            dark: '#1E293B',
+            light: '#F8FAFC',
+            accent: '#8B5CF6'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .table-wrapper {
+        overflow-x: auto;
+      }
+      .nav-item-active {
+        @apply bg-primary/10 text-primary border-l-4 border-primary;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-xl md:text-2xl font-bold text-dark flex items-center">
+        <i class="fa fa-gamepad text-primary mr-2"></i>
+        游戏开发文档
+      </h1>
+      <button id="mobileMenuBtn" class="md:hidden text-gray-600 hover:text-primary">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
+    <!-- 侧边导航 -->
+    <aside id="sidebar" class="md:w-64 lg:w-72 flex-shrink-0 hidden md:block">
+      <nav class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+        <h2 class="text-lg font-semibold mb-3 text-gray-700 border-b pb-2">文档导航</h2>
+        <ul class="space-y-1">
+          <li>
+            <a href="#material-guide" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              游戏设计素材导出格式整合表
+            </a>
+          </li>
+          <li>
+            <a href="#avg-dev-plan" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              2D独立解谜AVG游戏开发方案
+            </a>
+          <li class="mt-4 pt-4 border-t">
+            <a href="#project-management" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              项目管理总表
+            </a>
+          </li>
+          <li>
+            <a href="#tools-details" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              工具链与AI协作细节
+            </a>
+          </li>
+          <li>
+            <a href="#schedule-tips" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              工期优化技巧
+            </a>
+          </li>
+          <li>
+            <a href="#risk-management" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              风险应对
+            </a>
+          </li>
+          <li>
+            <a href="#deliverables" class="nav-link block px-4 py-2 rounded hover:bg-gray-100 transition-colors">
+              最终交付物
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- 主要内容区 -->
+    <main class="flex-1">
+      <!-- 游戏设计素材导出格式整合表 -->
+      <section id="material-guide" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-dark border-b pb-2">游戏设计素材导出格式整合表</h2>
+        
+        <div class="table-wrapper my-6">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">素材类型</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用途场景</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">推荐格式</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备注说明</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- 图片类 -->
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900" rowspan="3">图片类（UI/Logo/场景插画）</td>
+                <td class="px-6 py-4 whitespace-nowrap">源文件（可编辑）</td>
+                <td class="px-6 py-4">
+                  <div>PSD（UI分层）、AI（矢量）</div>
+                  <div>Figma/XD（UI原型）</div>
+                </td>
+                <td class="px-6 py-4">保留分层/可修改性，方便后续迭代优化</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">游戏引擎导入</td>
+                <td class="px-6 py-4">
+                  <div>PNG（透明UI/图标）</div>
+                  <div>TGA（带Alpha通道，Unreal/Unity首选）</div>
+                </td>
+                <td class="px-6 py-4">TGA画质无损，适配引擎渲染需求；PNG体积小，适合常规UI元素</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">分享/矢量需求</td>
+                <td class="px-6 py-4">
+                  <div>JPG（海报/背景）、SVG（无损缩放）</div>
+                  <div>EPS（印刷/跨软件）</div>
+                </td>
+                <td class="px-6 py-4">JPG压缩率高，SVG适配多分辨率Logo/图标，EPS兼容印刷与设计软件</td>
+              </tr>
+              
+              <!-- 视频/动效类 -->
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900" rowspan="3">视频/动效类（AE动画/过场动画）</td>
+                <td class="px-6 py-4 whitespace-nowrap">源文件（可编辑）</td>
+                <td class="px-6 py-4">AEP（AE专属）</td>
+                <td class="px-6 py-4">保留关键帧、图层与动效参数，支持二次修改</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">游戏引擎导入</td>
+                <td class="px-6 py-4">
+                  <div>PNG序列（逐帧动画）、WebM（轻量化）</div>
+                  <div>AVI（无损）</div>
+                </td>
+                <td class="px-6 py-4">PNG序列引擎易控制，WebM适配小游戏，AVI适合高精度过场动画</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">预览/测试</td>
+                <td class="px-6 py-4">
+                  <div>MP4（H.264）、MOV（ProRes）</div>
+                </td>
+                <td class="px-6 py-4">MP4体积小通用，MOV画质高，兼容后期剪辑软件</td>
+              </tr>
+              
+              <!-- 3D模型类 -->
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900" rowspan="3">3D模型类（Blender角色/场景）</td>
+                <td class="px-6 py-4 whitespace-nowrap">源文件（可编辑）</td>
+                <td class="px-6 py-4">BLEND（Blender专属）</td>
+                <td class="px-6 py-4">保留模型、材质、动画数据，支持全维度修改</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">游戏引擎导入</td>
+                <td class="px-6 py-4">
+                  <div>FBX（通用首选）、GLB/GLTF（轻量化）</div>
+                  <div>OBJ（静态模型）</div>
+                </td>
+                <td class="px-6 py-4">FBX兼容Unity/Unreal，支持动画/材质；GLB适配WebGL；OBJ无动画，适合简单场景</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">分享/导出备用</td>
+                <td class="px-6 py-4">
+                  <div>OBJ（通用静态）、STL（3D打印）</div>
+                </td>
+                <td class="px-6 py-4">STL仅用于3D打印需求，OBJ适合跨软件分享静态模型</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+          <p>可以补充不同引擎（Unity/Unreal）的专属优化格式，需要吗？</p>
+          <p class="text-sm text-gray-500 mt-2">（注：文档部分内容可能由 AI 生成）</p>
+        </div>
+      </section>
+
+      <!-- 2D独立解谜AVG游戏Ren'Py+AI开发方案 -->
+      <section id="avg-dev-plan" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-dark border-b pb-2">2D独立解谜AVG游戏Ren'Py+AI开发方案</h2>
+        
+        <p class="mb-6">以下是针对<strong>2D独立解谜AVG游戏（20万字文本）的Ren'Py+AI开发方案</strong>，结合技能（PS/AI/Blender等）和AI工具（GPT-4/Midjourney/Stable Diffusion），整理成表格化项目管理方案，包含<strong>工具链</strong>、<strong>核心工作流</strong>、<strong>工期规划</strong>和<strong>AI提效技巧</strong>：</p>
+        
+        <!-- 项目管理总表 -->
+        <section id="project-management" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-gray-800">项目管理总表</h3>
+          
+          <div class="table-wrapper my-4">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">阶段</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">核心工作内容</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">使用工具链</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关键AI提效点</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工期（独立开发）</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">前期筹备</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>世界观框架/解谜核心逻辑（如道具组合、剧情分支触发）</li>
+                      <li>视觉风格定义（角色/场景）</li>
+                      <li>剧本大纲拆分（20万字分章节+分支节点）</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    Ren'Py（项目初始化）、GPT-4（世界观生成）、Midjourney（风格参考图）
+                  </td>
+                  <td class="px-6 py-4">
+                    用GPT-4生成世界观设定+解谜原型，例如：“生成一个赛博朋克风格的图书馆密室解谜游戏核心逻辑”
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">2周</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">剧本生成</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>20万字剧本初稿（含分支选择）</li>
+                      <li>剧情分支树可视化</li>
+                      <li>解谜线索与文本关联校验</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    GPT-4（剧本生成）、Excel（分支树管理）、Ren'Py-AutoScriptPlugin
+                  </td>
+                  <td class="px-6 py-4">
+                    用GPT-4按章节生成剧本，提示词：“生成AVG游戏第3章，主角在博物馆发现古埃及石板，需解开象形文字谜题”
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">1个月</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">美术资产</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>角色立绘（表情差分）</li>
+                      <li>场景插画（解谜场景/背景）</li>
+                      <li>UI界面（对话框/道具栏）</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    Midjourney（立绘/场景）、Stable Diffusion（高精度背景）、PS（素材精修）
+                  </td>
+                  <td class="px-6 py-4">
+                    用AI生成美术提示词：“生成赛博朋克风格女性侦探立绘，棕色短发，穿着风衣，背景为雨夜街道”
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">1.5个月</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">交互开发</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>解谜逻辑实现（道具组合/场景触发）</li>
+                      <li>剧情分支跳转</li>
+                      <li>基础UI交互（点击/选择）</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    Ren'Py（Python脚本）、GPT-4（逻辑调试）
+                  </td>
+                  <td class="px-6 py-4">
+                    用Python代码实现解谜：<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">if inventory["钥匙"] and scene["门"]: jump "door_open"</code>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">3周</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">测试优化</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>全流程测试（剧情逻辑/解谜难度）</li>
+                      <li>文本错别字校对</li>
+                      <li>性能优化（加载速度/内存占用）</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    Ren'Py（内置调试工具）、GPT-4（文本校对）
+                  </td>
+                  <td class="px-6 py-4">
+                    用GPT-4检查剧本逻辑：“检查第5章是否存在分支选择后无法返回主线的情况”
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">2周</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">发布归档</td>
+                  <td class="px-6 py-4">
+                    <ol class="list-decimal list-inside space-y-1">
+                      <li>打包游戏（Windows/macOS/移动端）</li>
+                      <li>宣传素材制作（预告片/截图）</li>
+                      <li>源文件备份</li>
+                    </ol>
+                  </td>
+                  <td class="px-6 py-4">
+                    Ren'Py（打包工具）、PR（预告片剪辑）、Stable Diffusion（宣传图）
+                  </td>
+                  <td class="px-6 py-4">
+                    用Stable Diffusion生成宣传图：“生成游戏标题界面，主角站在图书馆废墟中，手持发光书籍”
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">1周</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <!-- 工具链与AI协作细节 -->
+        <section id="tools-details" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-gray-800">工具链与AI协作细节</h3>
+          
+          <div class="mb-6">
+            <h4 class="text-lg font-medium mb-3 text-gray-700">1. 剧本生成：GPT-4 + Ren'Py-AutoScriptPlugin</h4>
+            <p class="mb-2 font-medium">流程：</p>
+            <ol class="list-decimal list-inside space-y-3 mb-4">
+              <li>
+                <p class="mb-1">用GPT-4生成剧本大纲，例如：</p>
+                <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                  （剧本大纲示例内容）
+                </div>
+              </li>
+              <li>
+                <p class="mb-1">用Ren'Py-AutoScriptPlugin将大纲转换为Ren'Py脚本，自动生成角色定义和对话逻辑：</p>
+                <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                  （Python代码示例）
+                </div>
+              </li>
+            </ol>
+          </div>
+          
+          <div class="mb-6">
+            <h4 class="text-lg font-medium mb-3 text-gray-700">2. 美术生成：Midjourney + Stable Diffusion + PS</h4>
+            
+            <div class="mb-4">
+              <h5 class="font-medium mb-2">角色立绘：</h5>
+              <ul class="list-disc list-inside space-y-2">
+                <li>
+                  <p class="mb-1">用Midjourney生成初稿：</p>
+                  <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                    （提示词示例）
+                  </div>
+                </li>
+                <li>用PS精修细节，调整表情差分（如惊讶、思考）。</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h5 class="font-medium mb-2">场景插画：</h5>
+              <ul class="list-disc list-inside space-y-2">
+                <li>
+                  <p class="mb-1">用Stable Diffusion生成高精度背景：</p>
+                  <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                    （提示词示例）
+                  </div>
+                </li>
+                <li>用Blender添加简单3D元素（如旋转的全息投影），导出为2D图片。</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="text-lg font-medium mb-3 text-gray-700">3. 解谜逻辑：Ren'Py Python脚本 + GPT-4调试</h4>
+            
+            <div class="mb-4">
+              <h5 class="font-medium mb-2">道具组合逻辑：</h5>
+              <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                （Python代码示例）
+              </div>
+            </div>
+            
+            <div>
+              <h5 class="font-medium mb-2">用GPT-4调试逻辑：</h5>
+              <div class="bg-gray-100 p-3 rounded-md text-sm font-mono">
+                （调试提示示例）
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- 工期优化技巧 -->
+        <section id="schedule-tips" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-gray-800">工期优化技巧</h3>
+          
+          <ol class="list-decimal list-inside space-y-3">
+            <li>
+              <p class="font-medium">并行工作流：</p>
+              <p class="pl-6">剧本生成（1个月）与美术资产（1.5个月）部分重叠，例如第2周开始美术生成，同时进行剧本第1章写作。</p>
+            </li>
+            <li>
+              <p class="font-medium">AI辅助校对：</p>
+              <p class="pl-6">用GPT-4检查剧本错别字和逻辑连贯性，提示词：“检查以下文本是否有错别字，对话是否符合角色性格”。</p>
+            </li>
+            <li>
+              <p class="font-medium">快速原型验证：</p>
+              <p class="pl-6">用Ren'Py在1周内搭建可运行的Demo，包含核心解谜逻辑和基础UI，提前发现设计缺陷。</p>
+            </li>
+          </ol>
+        </section>
+        
+        <!-- 风险应对 -->
+        <section id="risk-management" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-gray-800">风险应对</h3>
+          
+          <ul class="list-disc list-inside space-y-3">
+            <li>
+              <p class="font-medium">美术风格不一致：</p>
+              <p class="pl-6">用Midjourney生成多个版本，选择最符合预期的作为基准，后续用PS统一色调。</p>
+            </li>
+            <li>
+              <p class="font-medium">解谜难度过高：</p>
+              <p class="pl-6">用Excel记录所有解谜线索和提示，确保每个谜题至少有2种提示方式（如对话提示、场景道具）。</p>
+            </li>
+            <li>
+              <p class="font-medium">AI生成质量不稳定：</p>
+              <p class="pl-6">手动优化提示词，例如添加“8k分辨率，超现实主义风格”提升美术质量。</p>
+            </li>
+          </ul>
+        </section>
+        
+        <!-- 最终交付物 -->
+        <section id="deliverables" class="mb-4">
+          <h3 class="text-xl font-semibold mb-4 text-gray-800">最终交付物</h3>
+          
+          <ol class="list-decimal list-inside space-y-3">
+            <li>
+              <p class="font-medium">游戏文件：</p>
+              <p class="pl-6">Windows/macOS可执行文件，移动端APK/IPA包。</p>
+            </li>
+            <li>
+              <p class="font-medium">源文件：</p>
+              <p class="pl-6">Ren'Py项目文件夹（含script.rpy、美术资源、音频文件）。</p>
+            </li>
+            <li>
+              <p class="font-medium">宣传素材：</p>
+              <p class="pl-6">1分钟预告片（PR剪辑）、10张宣传图（Stable Diffusion生成）、Steam商店页文案（GPT-4撰写）。</p>
+            </li>
+          </ol>
+          
+          <div class="mt-6 p-4 bg-indigo-50 rounded-lg border border-indigo-100">
+            <p>通过Ren'Py+AI工具链，可以在<strong>5个月内</strong>完成这款2D独立解谜AVG游戏的开发，大幅降低技术门槛和时间成本。重点是通过AI生成初稿，再用PS/Blender技能进行精细化调整，确保游戏质量。</p>
+            <p class="text-sm text-gray-500 mt-2">（注：文档部分内容可能由 AI 生成）</p>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-6 mt-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p>© 2023 游戏开发文档. 保留所有权利.</p>
+        <div class="mt-4 md:mt-0 flex space-x-4">
+          <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-github text-xl"></i></a>
+          <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-twitter text-xl"></i></a>
+          <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-linkedin text-xl"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 移动端菜单切换
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('inset-0');
+      sidebar.classList.toggle('z-50');
+      sidebar.classList.toggle('bg-white');
+      sidebar.classList.toggle('p-6');
+    });
+    
+    // 导航链接激活状态
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+    
+    function setActiveNavLink() {
+      const scrollY = window.pageYOffset;
+      
+      sections.forEach(section => {
+        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 100;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          navLinks.forEach(link => {
+            link.classList.remove('nav-item-active');
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('nav-item-active');
+            }
+          });
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', setActiveNavLink);
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // 移动端点击导航后关闭菜单
+          if (window.innerWidth < 768) {
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('fixed', 'inset-0', 'z-50', 'bg-white', 'p-6');
+          }
+        }
+      });
+    });
+    
+    // 初始设置激活的导航链接
+    setActiveNavLink();
+  </script>
+</body>
+</html>
